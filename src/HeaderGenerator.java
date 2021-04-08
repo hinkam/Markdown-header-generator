@@ -80,6 +80,16 @@ public class HeaderGenerator {
         }
     }
 
+    public void changeFile() {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) {
+            for (String transformedHeader: transformedHeaders) {
+                bw.write(transformedHeader + "\n");
+            }
+        } catch (IOException e) {
+            System.out.println("File Input Error");
+        }
+    }
+
     public void print() {
         if (!transformedHeaders.isEmpty()) {
             for (String transformedHeader : transformedHeaders) {

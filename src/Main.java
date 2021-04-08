@@ -12,6 +12,7 @@ public class Main {
         HeaderGenerator headerGenerator = new HeaderGenerator(filePath);
         headerGenerator.convert();
         headerGenerator.print();
+        headerGenerator.changeFile();
     }
 
 }
