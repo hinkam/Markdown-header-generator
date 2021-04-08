@@ -7,6 +7,7 @@ public class Main {
 
         System.out.println("Input file path:");
         String filePath = sc.next();
+        sc.close();
 
         HeaderGenerator headerGenerator = new HeaderGenerator(filePath);
         headerGenerator.convert();

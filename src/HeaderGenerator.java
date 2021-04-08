@@ -14,15 +14,16 @@ public class HeaderGenerator {
 
     // Its easy to find out how much headers there are on current level by using Stack.
     private int refreshHierarchy(String sharps) {
-        if (hierarchyStack.empty())
+        if (hierarchyStack.empty()) {
             hierarchyStack.push(1);
-        else if (hierarchyStack.size() == sharps.length())
+        } else if (hierarchyStack.size() == sharps.length()) {
             hierarchyStack.set(hierarchyStack.size() - 1, hierarchyStack.peek() + 1);
-        else if (hierarchyStack.size() < sharps.length()) {
+        } else if (hierarchyStack.size() < sharps.length()) {
             hierarchyStack.push(1);
         } else {
-            while (hierarchyStack.size() > sharps.length())
+            while (hierarchyStack.size() > sharps.length()) {
                 hierarchyStack.pop();
+            }
             hierarchyStack.set(hierarchyStack.size() - 1, hierarchyStack.peek() + 1);
         }
         return hierarchyStack.peek();
@@ -41,11 +42,11 @@ public class HeaderGenerator {
 
     // Unfortunately, i was unable to find a better solution for adding multiple tabulations at the beginning of a string
     private String createTabulation(int sharpStringLength) {
-        String tabulation = "";
-        if (sharpStringLength - 1 > 0)
-            for (int i = 0; i < sharpStringLength - 1; i++)
-                tabulation += "\t";
-        return tabulation;
+        StringBuilder tabulation = new StringBuilder();
+        if (sharpStringLength - 1 > 0) {
+            tabulation.append("\t".repeat(sharpStringLength - 1));
+        }
+        return tabulation.toString();
     }
 
     // Main method responsible for transforming the basic header string
@@ -55,21 +56,20 @@ public class HeaderGenerator {
         String tabulation = createTabulation(splitArray[0].length());
 
         String headerID = splitArray[1].trim().toLowerCase().replace(' ', '-');
-        if (headerEntryNumber > 1)
+        if (headerEntryNumber > 1) {
             headerID += String.format("-%d", headerEntryNumber - 1);
+        }
 
         return String.format("%s%d. [%s](#%s)", tabulation, currentNumber, splitArray[1], headerID);
     }
 
     public void convert() {
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(filePath));
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
-
             while ((line = br.readLine()) != null) {
                 fileData.add(line);
                 String[] splitArray = line.split(" ", 2);
-                if (!(splitArray[0].matches("[^#]*"))) {
+                if (splitArray[0].matches("#*")) {
                     transformedHeaders.add(transformHeader(splitArray));
                 }
             }
